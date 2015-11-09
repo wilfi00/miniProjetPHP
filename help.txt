@@ -1,0 +1,4 @@
+git status
+git add Lisez-moi.txt : pour tracker un fichier
+git commit -m "Ajout Lisez-moi.txt"
+git push origin master --force : push du commit
