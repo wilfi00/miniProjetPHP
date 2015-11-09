@@ -1,0 +1,89 @@
+<?php
+  // Déclaration de la matrice
+  $matrice = array();
+  $matrice[0] = array('X','O','X');
+  $matrice[1] = array('X','X','O');
+  $matrice[2] = array('X','O','O');
+?>
+
+<?php
+	for ($x = 1; $x <= 5; $x++)
+	{
+?>
+<?php
+
+class Plateau
+{
+
+	private $cellulesPlateau = array(array());
+	// http://www.apprendre-php.com/tutoriels/tutoriel-7-les-tableaux-ou-arrays.html
+
+	function __construct()
+	{
+
+		for ($x = 1; $x <= 5; $x++)
+		{	
+			$this.$cellulesPlateau = array
+			(
+				array($x, 1),
+				array($x, 2),
+				array($x, 3),
+				array($x, 4),
+				array($x, 5)
+
+				//for ($y = 1; $y <= 5; $y++)
+				//{
+					//array(new Cellule($x, $y));
+					//array($x, $y);
+				//}
+			);
+		}
+	
+		
+	}
+}
+
+?>
+
+<?php
+
+	$cellulesPlateau = array(array());
+	
+	for ($x = 1; $x <= 5; $x++)
+		{	
+			//for ($y = 1; $y <= 5; $y++)
+			//{
+			//	$cellulesPlateau[$x] = array($y, 'test');
+			//}
+
+			$cellulesPlateau = array
+			(
+				array($x, 1),
+				array($x, 2),
+				array($x, 3),
+				array($x, 4),
+				array($x, 5)
+
+				//for ($y = 1; $y <= 5; $y++)
+				//{
+					//array(new Cellule($x, $y));
+					//array($x, $y);
+				//}
+			);
+		}
+		echo "test";
+		echo $cellulesPlateau[1][3];
+
+	for ($row = 1; $row <= 5; $row++) 
+	{
+  		echo "<p><b>Ligne numero $row</b></p>";
+		echo "<ul>";
+	    for ($col = 1; $col <= 1; $col++) 
+		{
+		    echo "<li>".$cellulesPlateau[$row][$col]."</li>";
+  		}
+  		echo "</ul>";
+	}
+
+	
+?>

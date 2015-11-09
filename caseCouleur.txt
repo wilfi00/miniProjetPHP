@@ -1,0 +1,14 @@
+<?php
+						for ($i = 0; $i < $grille_width; $i++)
+						{
+							for ($j = 0; $j < $grille_height; $j++)
+							{
+								if (isset($monPlateau -> couleurCase($i, $j))
+								{
+									/*echo $monPlateau -> couleurCase($i, $j); */
+									echo "red";
+								}
+								else echo "white";
+							}
+						}
+					?>;

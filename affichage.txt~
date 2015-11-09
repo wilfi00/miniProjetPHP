@@ -1,0 +1,26 @@
+Dans la classe Jeu :
+	Quand on dessine la grille 5*5
+		Test de savoir si il y a sur le plateau une case non vide
+			Si oui on affiche un  (de la couleur du Joueur)
+
+	if ($monPlateau -> couleurCase(0, 0) != null)
+					{
+						echo "'",$couleur_case,"'";
+					}
+
+<?php echo "'",$couleur_case,"'";?>
+
+<?php
+													for ($i = 0; $i < $grille_width; $i++)
+													{
+														for ($j = 0; $j < $grille_height; $j++)
+														{
+															if ($monPlateau -> couleurCase($i, $j != null))
+															{
+																/*echo $monPlateau -> couleurCase($i, $j); */
+																echo "'",red,"'";
+															}
+															else echo "'",white,"'";
+														}
+													}
+												?>

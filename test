@@ -1,0 +1,12 @@
+new Cellule($x, $y)
+
+for ($row = 1; $row <= 5; $row++) 
+	{
+  		echo "<p><b>Row number $row</b></p>";
+		echo "<ul>";
+	    for ($col = 1; $col <= 5; $col++) 
+		{
+		    echo "<li>".$cellulesPlateau[$row][$col]."</li>";
+  		}
+  		echo "</ul>";
+	}
