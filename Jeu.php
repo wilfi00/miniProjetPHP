@@ -6,8 +6,9 @@
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
  	$monPlateau = new Plateau($j1, $j2);
-	echo $monPlateau -> couleurCase(4, 4);
+	//echo $monPlateau -> couleurCase(4, 4);
 	//var_dump($monPlateau);
+	var_dump($monPlateau -> getCasesAdjacentes(1,1));
 
 
 ?>
