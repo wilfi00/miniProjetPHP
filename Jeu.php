@@ -8,9 +8,9 @@
  	$monPlateau = new Plateau($j1, $j2);
 	//echo $monPlateau -> couleurCase(4, 4);
 	//var_dump($monPlateau);
-	var_dump($monPlateau -> getCasesAdjacentes(1,1));
-
-
+	//var_dump($monPlateau -> deplacementPossibleCases(0, 0));
+	//var_dump($monPlateau -> getCasesAdjacentes(4, 4));
+	var_dump($monPlateau -> deplacement(0, 3, $j2));
 ?>
 
 <?php

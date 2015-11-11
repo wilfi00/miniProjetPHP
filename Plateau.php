@@ -38,6 +38,11 @@
 			$this -> cellulesPlateau[4][3] -> setCaseJoueur($Joueur2);
 		}
 
+		public function getCellulePlateau($x, $y)
+		{
+			return $this -> cellulesPlateau[$x][$y];
+		}
+
 		public function couleurCase($x, $y)
 		{
 			return $this -> cellulesPlateau[$x][$y] -> getCaseJoueur() -> getCouleur();
@@ -55,72 +60,160 @@
 			}
 		}
 
+		// fonction qui retourne un tableau de Cases (classe Casse)
+		// Retourne toutes les cases adjacentes à une case de coordonnées x $x et y $y 
 		public function getCasesAdjacentes($x, $y)
 		{
 			$casesAdjacentes = array(array());
 			if (($x + 1) <= 4)
 			{
-				$cases = array($x+1, $y);
-				//array_push($caseAdjacentes, $cases);
-				$caseAdjacentes[] = $cases;
+				$caseAdjacentes[] = $this -> getCellulePlateau($x+1, $y);
 			}
 			if ((($x + 1) <= 4) && (($y + 1) <= 4))
 			{
-				$cases = array($x+1, $y+1);
-				$caseAdjacentes[] = $cases;
-				//array_push($caseAdjacentes, $cases);
+				$caseAdjacentes[] = $this -> getCellulePlateau($x+1, $y+1);
 			}
 			if (($y + 1) <= 4)
 			{
-				$cases = array($x, $y+1);
-				$caseAdjacentes[] = $cases;
-				//array_push($caseAdjacentes, $cases);
+				$caseAdjacentes[] = $this -> getCellulePlateau($x, $y+1);
 			}
 			if (($x - 1) >= 0)
 			{
-				$cases = array($x+1, $y);
-				$caseAdjacentes[] = $cases;
-				//array_push($caseAdjacentes, $cases);
+				$caseAdjacentes[] = $this -> getCellulePlateau($x-1, $y);
 			}
 			if ((($x - 1) >= 0) && (($y - 1) >= 0))
 			{
-				$cases = array($x+1, $y-1);
-				$caseAdjacentes[] = $cases;
-				//array_push($caseAdjacentes, $cases);
+				$caseAdjacentes[] = $this -> getCellulePlateau($x-1, $y-1);
 			}
 			if (($y - 1) >= 0)
 			{
-				$cases = array($x, $y-1);
-				$caseAdjacentes[] = $cases;
-				//array_push($caseAdjacentes, $cases);
+				$caseAdjacentes[] = $this -> getCellulePlateau($x, $y-1);
 			}
-			if ((($x + 1) >= 0) && (($y - 1) >= 0))
+			if ((($x + 1) <= 4) && (($y - 1) >= 0))
 			{
-				$cases = array($x+1, $y-1);
-				$caseAdjacentes[] = $cases;
+				$caseAdjacentes[] = $this -> getCellulePlateau($x+1, $y-1);
 			}
-			if ((($x - 1) >= 0) && (($y + 1) >= 0))
+			if ((($x - 1) >= 0) && (($y + 1) <= 4))
 			{
-				$cases = array($x-1, $y+1);
-				$caseAdjacentes[] = $cases;
+				$caseAdjacentes[] = $this -> getCellulePlateau($x-1, $y+1);
 			}
 	
 			return $caseAdjacentes;
 
 		}
-
-		public function deplacementImpossible($x, $y)
+		
+		// fonction qui retourne un tableau de Cases (classe Casse)
+		// Retourne toutes les cases adjacentes à une case de coordonnées x $x et y $y vides
+		public function deplacementPossibleCases($x, $y)
 		{
 			// Cases adjacentes *à la case* mais un pion dessus
+			$caseAdjacentes = $this -> getCasesAdjacentes($x, $y);
+			foreach($caseAdjacentes as $cases)
+			{
+				if($this -> caseVide($cases -> getCoordCaseX(), $cases -> getCoordCaseY()))
+				{
+					$casesPossibles[] = $cases;
+				}
+
+			}
+			return $casesPossibles;
 		}
 
-		public function deplacementPossible($x, $y)
+		// Fonction qui retourne un tableau de Cases (classe Casse)
+		// Retourne toutes les cases où un pion de coordonnées x $x et y $y peut se déplacer
+		public function deplacement($x, $y, $j)
 		{
-			// Cases adjacentes *à la case* et pas de pion dessus
+			$depPossible = false;
+			$casesAdjacentes = $this -> getCasesAdjacentes($x, $y);
+			foreach($casesAdjacentes as $cases)
+			{	
+				if($cases -> getCaseJoueur() == $j) $depPossible = true;
+			}
+			if($depPossible)
+			{
+				$depX = 1;
+				$depY = 1;
+
+				// Déplacement horizontal à droite
+				while($x + $depX < 5 and $this -> caseVide($x + $depX, $y))
+				{
+					$deplacement[] = new Casse($x + $depX, $y);
+					$depX++;
+				}
+				$depX = 1;
+
+
+				// Déplacement diagonal en bas à droite
+				while($x + $depX < 5 and $y + $depY < 5 and $this -> caseVide($x + $depX, $y + $depY))
+				{
+					$deplacement[] = new Casse($x + $depX, $y + $depY);
+					$depX++;
+					$depY++;
+				}
+				$depX = 1;
+				$depY = 1;
+
+				// Déplacement vertical en bas
+				while($y + $depY < 5 and $this -> caseVide($x, $y + $depY))
+				{
+					$deplacement[] = new Casse($x, $y + $depY);
+					$depY++;
+				}
+				$depY = 1;
+
+
+				// Déplacement diagonal en bas à gauche
+				while($x - $depX >= 0 and $y + $depY < 5 and $this -> caseVide($x - $depX, $y + $depY))
+				{
+					$deplacement[] = new Casse($x - $depX, $y + $depY);
+					$depX++;
+					$depY++;
+				}
+				$depX = 1;
+				$depY = 1;
+
+				// Déplacement horizontal à gauche
+				while($x - $depX >= 0 and $this -> caseVide($x - $depX, $y))
+				{
+					$deplacement[] = new Casse($x - $depX, $y);
+					$depX++;
+				}
+				$depX = 1;
+
+				// Déplacement diagonal en haut à gauche
+				while($x - $depX >= 0 and $y - $depY >= 0 and $this -> caseVide($x - $depX, $y - $depY))
+				{
+					$deplacement[] = new Casse($x - $depX, $y - $depY);
+					$depX++;
+					$depY++;
+				}
+				$depX = 1;
+				$depY = 1;
+
+				// Déplacement vertical en haut
+				while($y - $depY >= 0 and $this -> caseVide($x, $y - $depY))
+				{
+					$deplacement[] = new Casse($x, $y - $depY);
+					$depY++;
+				}
+				$depY = 1;
+
+				// Déplacement diagonal en haut à droite
+				while($x + $depX < 5 and $y - $depY >= 0 and $this -> caseVide($x + $depX, $y - $depY))
+				{
+					$deplacement[] = new Casse($x + $depX, $y - $depY);
+					$depX++;
+					$depY++;
+				}
+				$depX = 1;
+				$depY = 1;
+			}
+			else $deplacement = null;
+			return $deplacement;
 		}
 
 		// Il faut gerer les clics souris
-		// 
+		// Sur une image ?
 	}
 
 ?>
