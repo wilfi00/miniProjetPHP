@@ -43,6 +43,11 @@
 			return $this -> cellulesPlateau[$x][$y];
 		}
 
+		public function getPlateau()
+		{
+			return $this -> cellulesPlateau;
+		}
+
 		public function couleurCase($x, $y)
 		{
 			return $this -> cellulesPlateau[$x][$y] -> getCaseJoueur() -> getCouleur();
@@ -213,8 +218,6 @@
 			return $deplacement;
 		}
 
-		// Il faut gerer les clics souris
-		// Sur une image ?
 	}
 
 ?>

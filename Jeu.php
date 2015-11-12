@@ -1,20 +1,40 @@
 <?php
-	//echo "'","red","'";
-	//echo "'",$couleur_case,"'";
+	session_start();
 	require_once ("Plateau.php");
 	$couleur_case = "white";
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
- 	$monPlateau = new Plateau($j1, $j2);
+	$_SESSION['plateau'] = $monPlateau;
+ 	if($_SESSION['plateau'] != null)
+	{
+		echo "existe";	
+		$monPlateau = $_SESSION['plateau'];
+	}
+	else 
+	{
+		$monPlateau = new Plateau($j1, $j2);
+
+	}
+	var_dump($_SESSION['plateau']);
 	//echo $monPlateau -> couleurCase(4, 4);
-	//var_dump($monPlateau);
+
 	//var_dump($monPlateau -> deplacementPossibleCases(0, 0));
 	//var_dump($monPlateau -> getCasesAdjacentes(4, 4));
-	//var_dump($monPlateau -> deplacement(0, 3, $j2));
-?>
+	//var_dump($monPlateau -> deplacement(0, 3, $j2));	
 
+
+
+
+	//var_dump($monPlateau);
+		
+?>
 <?php
- 
+		//echo $monPlateau -> getCellulePlateau(0,0) -> getCoordCaseY();
+		
+	?>
+	<?php 	$j1 -> setPseudo("bite");	?>
+<?php
+ 	
 	// Configuration de la grille
  
 	$grille_width  = 5; // largeur de la grille
@@ -43,25 +63,33 @@
 		/*background: <?php echo $couleur_case;?>;	*/
         display: block;	
         float: left;
-        margin-left: 4px;
-        margin-bottom: 4px;
         width: 100px;
         height: 100px;
-        border: 1px solid #ddd;
+        border: 1px solid #A4A4A4;
         border-top: none;
         border-left: none;
     }
-
+	
 	/* A revoir */
-	button img
+	a img
 	{
-		width: 70px;
-		height: 70px;
+		font: white;
+		padding: 0px;
+		margin: 0px;
+		border: 0px;
+		width: 90px;
+		height: 90px;
 	}
-	button
-	{
+	a
+	{	
+		color: white;
 		background: white;
 		border: white;
+	}
+
+	p
+	{
+		background: blue;
 	}
     </style>
    	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -86,21 +114,47 @@
     </script>
 </head>
 <body>
-	 <button onclick="ClicBouton();"> <img src="panda.jpg" alt="J1" /> </button> 
-	<div class="grille">
+
+		<div class="grille">
 	
-   	<?php for ($i = 0; $i < $grille_width; $i++)
-	{?>	
+   		<?php for ($i = 0; $i < $grille_width; $i++)
+		{?>	
 				
-        	<div class="row">
-        	<?php for ($j = 0; $j < $grille_height; $j++)
-		{ ?>	
-          		<span class="case"></span>
+       	 		<div class="row">
+        		<?php for ($j = 0; $j < $grille_height; $j++)
+			{ ?>	
+          			<span class="case"> <a href=<?php echo "Jeu.php?coordX=", $j, "&coordY=", $i; ?> >
+
+					<?php
+							$cases = $monPlateau -> getCellulePlateau($j, $i);
+								if($cases -> getCaseJoueur() != null)
+								{							
+										if($cases -> getCaseJoueur() -> getCouleur() == "blue")
+									{
+										 echo "<img src=\"panda.jpg\" alt=\"J1\" />";
+									}
+									if($cases -> getCaseJoueur() -> getCouleur() == "red")
+									{
+										echo "<img src=\"panda2.jpeg\" alt=\"J2\" />" ;
+								
+									}
+								}
+								else echo "Ceci est du texte. J'aime trooooppp Solenn Maillard :p";
+							
+					?>
+
+			  	</a>  </span>
         	<?php } ?>
-		</div>
+				</div>
 	<?php } ?>	
 	
         
-    </div>
+    	</div>
+	
 </body>
+	
 </html>
+<?php $_SESSION['plateau'] = $monPlateau; ?>
+
+
+

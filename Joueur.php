@@ -22,6 +22,12 @@ class Joueur
 		return $this -> couleur;
 	}
 
+	public function setPseudo ($j)
+	{
+		echo $j;
+		$this -> pseudo = $j;
+	}
+
 }
 
 ?>
