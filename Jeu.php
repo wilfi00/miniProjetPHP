@@ -10,7 +10,7 @@
 	//var_dump($monPlateau);
 	//var_dump($monPlateau -> deplacementPossibleCases(0, 0));
 	//var_dump($monPlateau -> getCasesAdjacentes(4, 4));
-	var_dump($monPlateau -> deplacement(0, 3, $j2));
+	//var_dump($monPlateau -> deplacement(0, 3, $j2));
 ?>
 
 <?php
@@ -51,6 +51,18 @@
         border-top: none;
         border-left: none;
     }
+
+	/* A revoir */
+	button img
+	{
+		width: 70px;
+		height: 70px;
+	}
+	button
+	{
+		background: white;
+		border: white;
+	}
     </style>
    	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	
@@ -74,6 +86,7 @@
     </script>
 </head>
 <body>
+	 <button onclick="ClicBouton();"> <img src="panda.jpg" alt="J1" /> </button> 
 	<div class="grille">
 	
    	<?php for ($i = 0; $i < $grille_width; $i++)

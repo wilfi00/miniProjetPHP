@@ -102,6 +102,7 @@
 
 		}
 		
+		// Fonction useless pour le moment
 		// fonction qui retourne un tableau de Cases (classe Casse)
 		// Retourne toutes les cases adjacentes à une case de coordonnées x $x et y $y vides
 		public function deplacementPossibleCases($x, $y)
