@@ -4,7 +4,9 @@
 	$couleur_case = "white";
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
-	$_SESSION['plateau'] = $monPlateau;
+	$pionJ1 = false;
+	/*
+	if(isset($monPlateau)) $_SESSION['plateau'] = $monPlateau;
  	if($_SESSION['plateau'] != null)
 	{
 		echo "existe";	
@@ -15,7 +17,10 @@
 		$monPlateau = new Plateau($j1, $j2);
 
 	}
-	var_dump($_SESSION['plateau']);
+	*/
+	$monPlateau = new Plateau($j1, $j2);
+
+	//var_dump($_SESSION['plateau']);
 	//echo $monPlateau -> couleurCase(4, 4);
 
 	//var_dump($monPlateau -> deplacementPossibleCases(0, 0));
@@ -73,7 +78,6 @@
 	/* A revoir */
 	a img
 	{
-		font: white;
 		padding: 0px;
 		margin: 0px;
 		border: 0px;
@@ -82,7 +86,6 @@
 	}
 	a
 	{	
-		color: white;
 		background: white;
 		border: white;
 	}
@@ -126,6 +129,7 @@
           			<span class="case"> <a href=<?php echo "Jeu.php?coordX=", $j, "&coordY=", $i; ?> >
 
 					<?php
+						
 							$cases = $monPlateau -> getCellulePlateau($j, $i);
 								if($cases -> getCaseJoueur() != null)
 								{							
@@ -139,7 +143,62 @@
 								
 									}
 								}
-								else echo "Ceci est du texte. J'aime trooooppp Solenn Maillard :p";
+								//else echo "Ceci est du texte. J'aime trooooppp Solenn Maillard :p";
+								//else echo "<img src=\"So.png\" alt=\"J2\" />";
+							
+							// Tour de jeu j1
+							if(isset ($_GET['coordX']) and isset($_GET['coordY']))
+							{
+								$x = $_GET['coordX'];
+								$y = $_GET['coordY'];
+								
+								if(!isset($_SESSION['j1X']) or $pionJ1 == true)
+								{
+									if ($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() != null)
+									{
+										if($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() -> getCouleur() == "red")
+										{	
+											$_SESSION['j1X'] = $x;
+											$_SESSION['j1Y'] = $y;
+											$pionJ1 = true;
+											foreach($monPlateau -> deplacement($x, $y, $j1) as $caseDep)
+											{
+												if($cases == $caseDep)
+												{
+													//echo "test4";
+													echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
+												}
+											
+											}
+										
+										}
+										else {}//echo "blue";
+									}
+									else {}//echo "vide";
+								}
+								// Vraiment utile le else if ?
+								else if (isset($_SESSION['j1X']) and $pionJ1 == false)
+								{
+									$ancienX = $_SESSION['j1X'];
+									$ancienY = $_SESSION['j1Y'];
+									foreach($monPlateau -> deplacement($ancienX, $ancienY, $j1) as $caseDep)
+									{
+										if($cases == $caseDep)
+										{
+											//echo "test4";
+											echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
+										}
+										else if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
+											$_GET['coordY'] == $caseDep -> getCoordCaseY())
+										{
+											echo "bouge ";
+											// deplacement du pion càd changement de coordonnées
+										}
+											
+									}
+								
+								}
+							}
 							
 					?>
 
@@ -154,7 +213,10 @@
 </body>
 	
 </html>
-<?php $_SESSION['plateau'] = $monPlateau; ?>
+<?php $_SESSION['plateau'] = $monPlateau; 
+								if(!isset($_SESSION['j1X'])) echo "pas def";
 
+?>
+	
 
 
