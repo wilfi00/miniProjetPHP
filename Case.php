@@ -22,6 +22,12 @@
 		{ 
 			return $this -> coordCaseY;
 		}
+
+		public function setCoordCase($x, $y)
+		{
+			$this -> coordCaseX = $x;
+			$this -> coordCaseY = $y;
+		}
 		
 		public function getCaseJoueur() 
 		{

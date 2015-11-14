@@ -214,10 +214,11 @@
 				$depX = 1;
 				$depY = 1;
 			}
-			else $deplacement = null;
+			if(!isset($deplacement)) $deplacement = null;
 			return $deplacement;
 		}
 
+		
 	}
 
 ?>

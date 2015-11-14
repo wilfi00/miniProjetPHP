@@ -5,7 +5,6 @@
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
 	$j3 = new Joueur("deplacement", "white"); // Joueur qui symbolise le tour de jeu où on clique sur une case vide pour effectuer un déplacement
-	$j4 = new Joueur("deplacement2", "white");	
 	$pionJ1 = false;
 	
 	if(isset($monPlateau)) $_SESSION['plateau'] = $monPlateau;
@@ -36,7 +35,7 @@
 		//echo $monPlateau -> getCellulePlateau(0,0) -> getCoordCaseY();
 		
 	?>
-
+	<?php 	$j1 -> setPseudo("bite");	?>
 <?php
  	
 	// Configuration de la grille
@@ -146,7 +145,6 @@
 								//else echo "<img src=\"So.png\" alt=\"J2\" />";
 							
 							// Tour de jeu j1
-							
 							if($_SESSION['tourDeJeu'] == $j1 or $_SESSION['tourDeJeu'] == $j3)
 							{
 								if(isset ($_GET['coordX']) and isset($_GET['coordY']))
@@ -181,7 +179,7 @@
 									{
 										$ancienX = $_SESSION['j1X'];
 										$ancienY = $_SESSION['j1Y'];
-										if($monPlateau -> deplacement($ancienX, $ancienY, $j1) != null)
+										if($monPlateau -> deplacement($ancienX, $ancienY, $j1 != null))
 										{
 											foreach($monPlateau -> deplacement($ancienX, $ancienY, $j1) as $caseDep)
 											{
@@ -197,7 +195,6 @@
 													$caseArrivee -> setCaseJoueur($j1);
 													$monPlateau -> getCellulePlateau($ancienX, $ancienY) -> setCaseJoueur(null);
 													$_SESSION['tourDeJeu'] = $j2;
-													header('Location: Jeu.php');
 													// deplacement du pion càd changement de coordonnées
 												}
 											}
@@ -205,72 +202,9 @@
 									}
 								}
 							}
-							// Tour de jeu j2
-							else if ($_SESSION['tourDeJeu'] == $j2 or $_SESSION['tourDeJeu'] == $j4)
+							else if ($_SESSION['tourDeJeu'] == $j2)
 							{
-								if(isset ($_GET['coordX']) and isset($_GET['coordY']))
-								{
-									$x = $_GET['coordX'];
-									$y = $_GET['coordY'];
-								
-										if ($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() != null)
-										{
-											if($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() -> getCouleur() == "blue")
-											{	
-												$_SESSION['j2X'] = $x;
-												$_SESSION['j2Y'] = $y;
-												$_SESSION['tourDeJeu'] = $j4;
-												foreach($monPlateau -> deplacement($x, $y, $j2) as $caseDep)
-												{
-													/*
-													foreach($cases as $case)
-													{
-														echo "case";
-														echo $case -> getCoordCaseX();
-													}
-													echo "caseDep";
-													echo $caseDep -> getCoordCaseX();
-													*/
-													if($cases == $caseDep)
-													{	
-														echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
-													}
-											
-												}
-										
-											}
-																				
-										}
-										
-									// Vraiment utile le else if ?
-									
-									else if (isset($_SESSION['j2X']) and $_SESSION['tourDeJeu'] == $j4)
-									{
-										echo "test2";
-										$ancienX = $_SESSION['j2X'];
-										$ancienY = $_SESSION['j2Y'];
-										if($monPlateau -> deplacement($ancienX, $ancienY, $j2) != null)
-										{
-											foreach($monPlateau -> deplacement($ancienX, $ancienY, $j2) as $caseDep)
-											{
-												if($cases == $caseDep)
-												{
-													echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
-												}
-												else if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
-													$_GET['coordY'] == $caseDep -> getCoordCaseY())
-												{	
-													$caseArrivee = $monPlateau -> getCellulePlateau($_GET['coordX'], $_GET['coordY']);
-													$caseArrivee -> setCaseJoueur($j2);
-													$monPlateau -> getCellulePlateau($ancienX, $ancienY) -> setCaseJoueur(null);
-													$_SESSION['tourDeJeu'] = $j1;
-													header('Location: Jeu.php');
-													// deplacement du pion càd changement de coordonnées
-												}
-											}
-										}
-									}
-								}
+	
 							}
 							
 					?>
@@ -293,7 +227,8 @@
 	
 </html>
 <?php 
-	$_SESSION['plateau'] = $monPlateau;
+	//var_dump($_SESSION['plateau']);
+	$_SESSION['plateau'] = $monPlateau; 
 	if(!isset($_SESSION['j1X'])) echo "pas def";
 
 ?>
