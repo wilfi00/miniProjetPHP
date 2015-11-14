@@ -166,15 +166,18 @@
 												$_SESSION['j1Y'] = $y;
 												$_SESSION['tourDeJeu'] = $j3;
 												// Liste toutes les cases où il est possible de déplacer le pion et affiche une image pour le montrer au joueur
-												foreach($monPlateau -> deplacement($x, $y, $j1) as $caseDep)
+												if($monPlateau -> deplacement($x, $y, $j1) != null)
 												{
-													if($cases == $caseDep)
+													foreach($monPlateau -> deplacement($x, $y, $j1) as $caseDep)
 													{
-														echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
-													}
+														if($cases == $caseDep)
+														{
+															echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
+														}
 											
+													}
 												}
-										
+												else $erreur = "Impossible de déplacer le pion : <br/> aucun autre pion de même couleur adjacent";
 											}
 										}
 										
@@ -185,11 +188,13 @@
 										$ancienX = $_SESSION['j1X'];
 										$ancienY = $_SESSION['j1Y'];
 										
+										// Sauvegardes pour le script qui annule le dernier coup
 										$_SESSION['sauvegardeX'] = $ancienX;
 										$_SESSION['sauvegardeY'] = $ancienY;
 										$_SESSION['sauvegardeX2'] = $_GET['coordX'];
 										$_SESSION['sauvegardeY2'] = $_GET['coordY'];
 										$_SESSION['sauvegardeJ'] = $j1;
+
 										if($monPlateau -> deplacement($ancienX, $ancienY, $j1) != null)
 										{
 											// caseDep : case vide sélectionnée prise dans la liste des déplacements possibles
@@ -225,13 +230,17 @@
 												$_SESSION['j2X'] = $x;
 												$_SESSION['j2Y'] = $y;
 												$_SESSION['tourDeJeu'] = $j4;
-												foreach($monPlateau -> deplacement($x, $y, $j2) as $caseDep)
+												if($monPlateau -> deplacement($x, $y, $j2) != null)
 												{
-													if($cases == $caseDep)
-													{	
-														echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
+													foreach($monPlateau -> deplacement($x, $y, $j2) as $caseDep)
+													{
+														if($cases == $caseDep)
+														{	
+															echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
+														}
 													}
 												}
+												else $erreur = "Impossible de déplacer le pion : <br/> aucun autre pion de même couleur";
 											}								
 										}
 										
@@ -241,11 +250,13 @@
 										$ancienX = $_SESSION['j2X'];
 										$ancienY = $_SESSION['j2Y'];
 							
+										// Sauvegardes pour le script qui annule le dernier coup
 										$_SESSION['sauvegardeX'] = $ancienX;
 										$_SESSION['sauvegardeY'] = $ancienY;
 										$_SESSION['sauvegardeX2'] = $_GET['coordX'];
 										$_SESSION['sauvegardeY2'] = $_GET['coordY'];
 										$_SESSION['sauvegardeJ'] = $j2;
+
 										if($monPlateau -> deplacement($ancienX, $ancienY, $j2) != null)
 										{
 											foreach($monPlateau -> deplacement($ancienX, $ancienY, $j2) as $caseDep)
@@ -304,11 +315,9 @@
 	
 </html>
 
-<?php 
-	// Sauvegarde de l'état du plateau
-	//if(isset($_SESSION['plateau'])) $_SESSION['sauvegarde'] = $_SESSION['plateau'];
+<?php
+	$monPlateau -> gagnee($j1);
 	$_SESSION['plateau'] = $monPlateau;
-	//$monPlateau -> gagnee($j1);
 ?>
 	
 

@@ -208,21 +208,45 @@
 		{
 			$nbPions = 0;
 
-			foreach($this -> cellulesPlateau as $case)
+			for($x = 0; $x <= 4; $x++)
 			{
-				var_dump($case -> getCaseJoueur());
-				//if($case -> getCaseJoueur() == $j)
-				/*{
-					// Si aucun pion n'est isolé
-					if($this -> getCasesAdjacentes($case -> getCoordCaseX(), $case -> getCoordCaseY()) != null)
+				for($y = 0; $y <= 4; $y++)
+				{
+					$joueur = $this -> getCellulePlateau($x, $y) -> getCaseJoueur();
+					
+
+					// Si le pion est à lui
+					if($joueur == $j)
 					{
-						if($this -> getCasesAdjacentes($case -> getCoordCaseX(), $case -> getCoordCaseY()) -> getCaseJoueur() != $j)
+						$casesAdj = $this -> getCasesAdjacentes($x, $y);
+
+						// Si aucun pion n'est isolé
+						if($casesAdj != null)
 						{
-							$nbPions++;
+							foreach($casesAdj as $cases)
+							{	
+								$joueurAutre = $cases -> getCaseJoueur();
+								if($joueurAutre != $j)
+								{
+									$nbPions++;
+								}
+							}
+							/*
+							for($x = 0; $x <= 4; $x++)
+							{
+								for($y = 0; $y <= 4; $y++)
+								{
+									$joueur2 =  $casesAdj[$x][$y] -> getCaseJoueur();
+								}
+							}*/
+							// Si aucun de ses pions sont adjacents
+							
 						}
 					}
-				}*/
+				}
 			}
+			// Si les 7 pions respectent la condition le joueur a gagné
+			echo $nbPions;
 			if($nbPions == 7) return true;
 			else return false;
 		}	
