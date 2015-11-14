@@ -1,5 +1,5 @@
 <?php
-	// Erreur si on met Case ???
+	// Classe qui définit une case du plateau
 	class Casse
 	{
 		private $caseJoueur; // indique le joueur qui a son pion sur la case (null si vide)

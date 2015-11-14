@@ -25,7 +25,7 @@
 
 			}
 
-			// Initialisation partie (pions placés)
+			// Initialisation partie (pions placés pour commencer une partie)
 			for ($i = 0; $i <= 4; $i++)
 			{
 				$this -> cellulesPlateau[$i][0] -> setCaseJoueur($Joueur1);
@@ -37,22 +37,26 @@
 			$this -> cellulesPlateau[0][3] -> setCaseJoueur($Joueur2);
 			$this -> cellulesPlateau[4][3] -> setCaseJoueur($Joueur2);
 		}
-
+		
+		// retourne la case à l'emplacement $x $y du plateau
 		public function getCellulePlateau($x, $y)
 		{
 			return $this -> cellulesPlateau[$x][$y];
 		}
 
+		// retourne le plateau
 		public function getPlateau()
 		{
 			return $this -> cellulesPlateau;
 		}
 
+		// retourne la couleur de la case à l'emplacement $x $y du plateau
 		public function couleurCase($x, $y)
 		{
 			return $this -> cellulesPlateau[$x][$y] -> getCaseJoueur() -> getCouleur();
 		}
 
+		// retourne vrai si la case à l'emplacement $x $y du plateau est vide
 		public function caseVide($x, $y)
 		{
 			if ($this -> cellulesPlateau[$x][$y] -> getCaseJoueur() == null)
@@ -65,7 +69,7 @@
 			}
 		}
 
-		// fonction qui retourne un tableau de Cases (classe Casse)
+		// Fonction qui retourne un tableau de Cases (classe Casse)
 		// Retourne toutes les cases adjacentes à une case de coordonnées x $x et y $y 
 		public function getCasesAdjacentes($x, $y)
 		{

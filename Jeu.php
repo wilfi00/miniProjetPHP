@@ -1,14 +1,28 @@
 <?php
+	/*
+		Gestion des tours de jeu avec $_SESSION['tourDeJeu'] en symbolisant les tours avec j1 et j2 et avec les joueurs fictifs qui représentent les tours où on clique pour effectuer un déplacement sur une case vide avec j3 (pour le joueur1) et j4 (pour le joueur2).
+
+		Algorithme : 
+		tourDeJeu = j1
+		Tant que un des 2 joueurs n'a pas gagné : 
+			Si c'est le tour de j1
+				Le Joueur1 joue en cliquant sur un de ses pions -- tourDeJeu = j3
+				On passe au tour de j3
+					Le joueur1 joue en cliquant sur un des déplacements possible -- tourDeJeu = j2
+			Si c'est le tour de j2
+				Le Joueur2 joue en cliquant sur un de ses pions -- tourDeJeu = j4
+				On passe au tour de j4
+					Le joueur2 joue en cliquant sur un des déplacements possible -- tourDeJeu = j1
+	*/
+
 	require_once ("Plateau.php");
 	session_start();
-	$couleur_case = "white";
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
 	$j3 = new Joueur("deplacement", "white"); // Joueur qui symbolise le tour de jeu où on clique sur une case vide pour effectuer un déplacement
-	$j4 = new Joueur("deplacement2", "white");	
-	$pionJ1 = false;
-	
-	if(isset($monPlateau)) $_SESSION['plateau'] = $monPlateau;
+	$j4 = new Joueur("deplacement2", "white"); // Même chose pour le joueur 2
+
+	// Permet de ne pas réinitialiser la partie à chaque fois qu'on appelle la page
  	if(isset($_SESSION['plateau']))
 	{
 		$monPlateau = $_SESSION['plateau'];
@@ -19,36 +33,17 @@
 		$_SESSION['tourDeJeu'] = $j1;
 	}
 
-	//var_dump($_SESSION['plateau']);
-	//echo $monPlateau -> couleurCase(4, 4);
-
-	//var_dump($monPlateau -> deplacementPossibleCases(0, 0));
-	//var_dump($monPlateau -> getCasesAdjacentes(4, 4));
-	//var_dump($monPlateau -> deplacement(0, 3, $j2));	
-
-
-
-
-	//var_dump($monPlateau);
-		
-?>
-<?php
-		//echo $monPlateau -> getCellulePlateau(0,0) -> getCoordCaseY();
-		
-	?>
-
-<?php
- 	
 	// Configuration de la grille
  
 	$grille_width  = 5; // largeur de la grille
 	$grille_height = 5; // hauteur de la grille
  
 ?>
+
 <!doctype html>
 <head>
     <meta charset="UTF-8">
-    <title>Grille</title>
+    <title>Entropy</title>
     <style type="text/css" media="screen">
 	.grille
 	{
@@ -60,7 +55,6 @@
  
     .grille .row:after {
         content: " ";
-        /* visibility: hidden; */
         display: block;
         height: 0;
         clear: both;
@@ -68,7 +62,6 @@
  
     .grille .case 
 	{
-		/*background: <?php echo $couleur_case;?>;	*/
         display: block;	
         float: left;
         width: 100px;
@@ -108,7 +101,7 @@
             	},
             	function () 
 				{
-	                $(this).css('background', <?php echo "'",$couleur_case,"'";?>);
+	                $(this).css('background', <?php echo "'","white","'";?>);
 	       	 	}
        	 	);
     });
@@ -118,7 +111,9 @@
 <body>
 
 		<div class="grille">
-	
+
+		<!-- Gestion de la partie avec l'affichage et les tours de jeu pour les 2 joueurs-->
+
    		<?php for ($i = 0; $i < $grille_width; $i++)
 		{?>	
 				
@@ -205,6 +200,7 @@
 									}
 								}
 							}
+
 							// Tour de jeu j2
 							else if ($_SESSION['tourDeJeu'] == $j2 or $_SESSION['tourDeJeu'] == $j4)
 							{
@@ -222,24 +218,12 @@
 												$_SESSION['tourDeJeu'] = $j4;
 												foreach($monPlateau -> deplacement($x, $y, $j2) as $caseDep)
 												{
-													/*
-													foreach($cases as $case)
-													{
-														echo "case";
-														echo $case -> getCoordCaseX();
-													}
-													echo "caseDep";
-													echo $caseDep -> getCoordCaseX();
-													*/
 													if($cases == $caseDep)
 													{	
 														echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
 													}
-											
 												}
-										
-											}
-																				
+											}								
 										}
 										
 									// Vraiment utile le else if ?
@@ -278,11 +262,13 @@
 			  	</a>  </span>
         	<?php } ?>
 				</div>
+					<!-- Fin de la gestion de la partie avec l'affichage et les tours de jeu pour les 2 joueurs-->
 	<?php } ?>	
 	
         
     	</div>
 
+		<!-- Bouton pour recommencer une partie-->
 		<div style="float: right;">
 			<form method = "get" action="Reinitialisation.php">
 				<input type="submit" name="reini" value= "Redémarer la partie" />
@@ -292,10 +278,10 @@
 </body>
 	
 </html>
-<?php 
-	$_SESSION['plateau'] = $monPlateau;
-	if(!isset($_SESSION['j1X'])) echo "pas def";
 
+<?php 
+	// Sauvegarde de l'état du plateau
+	$_SESSION['plateau'] = $monPlateau;
 ?>
 	
 

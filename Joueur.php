@@ -1,6 +1,6 @@
 <?php
 
-//Obvious classe
+// Classe qui définie un joueur par son pseudo et sa couleur
 class Joueur
 {
     private $pseudo;
