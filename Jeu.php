@@ -1,5 +1,11 @@
 <?php
 	/*
+		Feuille de style ?
+		Retour en arrière
+		Condition pour gagner
+		CSS
+	*/	
+	/*
 		Gestion des tours de jeu avec $_SESSION['tourDeJeu'] en symbolisant les tours avec j1 et j2 et avec les joueurs fictifs qui représentent les tours où on clique pour effectuer un déplacement sur une case vide avec j3 (pour le joueur1) et j4 (pour le joueur2).
 
 		Algorithme : 
@@ -16,11 +22,13 @@
 	*/
 
 	require_once ("Plateau.php");
+	
 	session_start();
+	$erreur = "Aucune erreur";
 	$j1 = new Joueur("wilfi", "red");
 	$j2 = new Joueur("pancho", "blue");
-	$j3 = new Joueur("deplacement", "white"); // Joueur qui symbolise le tour de jeu où on clique sur une case vide pour effectuer un déplacement
-	$j4 = new Joueur("deplacement2", "white"); // Même chose pour le joueur 2
+	$j3 = new Joueur("deplacement joueur 1", "white"); // Joueur qui symbolise le tour de jeu où on clique sur une case vide pour effectuer un déplacement
+	$j4 = new Joueur("deplacement joueur 2", "white"); // Même chose pour le joueur 2
 
 	// Permet de ne pas réinitialiser la partie à chaque fois qu'on appelle la page
  	if(isset($_SESSION['plateau']))
@@ -71,7 +79,7 @@
         border-left: none;
     }
 	
-	/* A revoir */
+	/* A revoir pour centrer*/
 	a img
 	{
 		padding: 0px;
@@ -123,8 +131,9 @@
           			<span class="case"> <a href=<?php echo "Jeu.php?coordX=", $j, "&coordY=", $i; ?> >
 
 					<?php
-						
+							// Variable qui contient tour à tour toutes les cases du plateau
 							$cases = $monPlateau -> getCellulePlateau($j, $i);
+							// Si la case est occupé par un joueur on affiche l'image du pion correspondant
 								if($cases -> getCaseJoueur() != null)
 								{							
 										if($cases -> getCaseJoueur() -> getCouleur() == "blue")
@@ -137,13 +146,11 @@
 								
 									}
 								}
-								//else echo "Ceci est du texte. J'aime trooooppp Solenn Maillard :p";
-								//else echo "<img src=\"So.png\" alt=\"J2\" />";
 							
-							// Tour de jeu j1
-							
+							// Tour de jeu j1 (joueur1)	
 							if($_SESSION['tourDeJeu'] == $j1 or $_SESSION['tourDeJeu'] == $j3)
 							{
+								// Si une case a été selectionnée
 								if(isset ($_GET['coordX']) and isset($_GET['coordY']))
 								{
 									$x = $_GET['coordX'];
@@ -151,49 +158,51 @@
 								
 										if ($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() != null)
 										{
+											// Si la case selectionnée correspond au joueur1 (couleur red)
 											if($monPlateau -> getCellulePlateau($x, $y) -> getCaseJoueur() -> getCouleur() == "red")
 											{	
+												// On sauvegarde les coordonnées x et y dans des variables de session et on modifie le tour de jeu pour attendre la selection d'une case vide où le déplacement est possible
 												$_SESSION['j1X'] = $x;
 												$_SESSION['j1Y'] = $y;
 												$_SESSION['tourDeJeu'] = $j3;
-												
+												// Liste toutes les cases où il est possible de déplacer le pion et affiche une image pour le montrer au joueur
 												foreach($monPlateau -> deplacement($x, $y, $j1) as $caseDep)
 												{
 													if($cases == $caseDep)
 													{
-														//echo "test4";
 														echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
 													}
 											
 												}
 										
 											}
-											else {}//echo "blue";
 										}
 										
-									// Vraiment utile le else if ?
+									// Gestion du clique sur une case vide pour effectuer le déplacement du pion du joueur1
 									else if (isset($_SESSION['j1X']) and $_SESSION['tourDeJeu'] == $j3)
 									{
+										// Sauvegarde des coordonnées du pion selectionnée que le joueur1 souhaite déplacer
 										$ancienX = $_SESSION['j1X'];
 										$ancienY = $_SESSION['j1Y'];
+										
+										$_SESSION['sauvegardeX'] = $ancienX;
+										$_SESSION['sauvegardeY'] = $ancienY;
+										$_SESSION['sauvegardeX2'] = $_GET['coordX'];
+										$_SESSION['sauvegardeY2'] = $_GET['coordY'];
+										$_SESSION['sauvegardeJ'] = $j1;
 										if($monPlateau -> deplacement($ancienX, $ancienY, $j1) != null)
 										{
+											// caseDep : case vide sélectionnée prise dans la liste des déplacements possibles
 											foreach($monPlateau -> deplacement($ancienX, $ancienY, $j1) as $caseDep)
 											{
-												if($cases == $caseDep)
-												{
-													//echo "test4";
-													echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
-												}
-												else if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
+												if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
 													$_GET['coordY'] == $caseDep -> getCoordCaseY())
 												{	
 													$caseArrivee = $monPlateau -> getCellulePlateau($_GET['coordX'], $_GET['coordY']);
-													$caseArrivee -> setCaseJoueur($j1);
-													$monPlateau -> getCellulePlateau($ancienX, $ancienY) -> setCaseJoueur(null);
-													$_SESSION['tourDeJeu'] = $j2;
-													header('Location: Jeu.php');
-													// deplacement du pion càd changement de coordonnées
+													$caseArrivee -> setCaseJoueur($j1); // On rajoute le pion du joueur à la case sélectionnée
+													$monPlateau -> getCellulePlateau($ancienX, $ancienY) -> setCaseJoueur(null); // On supprime le pion du joueur
+													$_SESSION['tourDeJeu'] = $j2; // On change le tour de jeu pour que le joueur2 joue
+													header('Location: Jeu.php'); // Redirection pour ne plus avoir les anciennes données de l'URL longue
 												}
 											}
 										}
@@ -201,7 +210,7 @@
 								}
 							}
 
-							// Tour de jeu j2
+							// Tour de jeu j2 : même fonctionnement que pour le j1
 							else if ($_SESSION['tourDeJeu'] == $j2 or $_SESSION['tourDeJeu'] == $j4)
 							{
 								if(isset ($_GET['coordX']) and isset($_GET['coordY']))
@@ -226,22 +235,22 @@
 											}								
 										}
 										
-									// Vraiment utile le else if ?
 									
 									else if (isset($_SESSION['j2X']) and $_SESSION['tourDeJeu'] == $j4)
 									{
-										echo "test2";
 										$ancienX = $_SESSION['j2X'];
 										$ancienY = $_SESSION['j2Y'];
+							
+										$_SESSION['sauvegardeX'] = $ancienX;
+										$_SESSION['sauvegardeY'] = $ancienY;
+										$_SESSION['sauvegardeX2'] = $_GET['coordX'];
+										$_SESSION['sauvegardeY2'] = $_GET['coordY'];
+										$_SESSION['sauvegardeJ'] = $j2;
 										if($monPlateau -> deplacement($ancienX, $ancienY, $j2) != null)
 										{
 											foreach($monPlateau -> deplacement($ancienX, $ancienY, $j2) as $caseDep)
 											{
-												if($cases == $caseDep)
-												{
-													echo "<img src=\"So.png\" alt=\"casesDéplacement\" />";
-												}
-												else if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
+												if ($_GET['coordX'] == $caseDep -> getCoordCaseX() and 
 													$_GET['coordY'] == $caseDep -> getCoordCaseY())
 												{	
 													$caseArrivee = $monPlateau -> getCellulePlateau($_GET['coordX'], $_GET['coordY']);
@@ -268,11 +277,27 @@
         
     	</div>
 
-		<!-- Bouton pour recommencer une partie-->
-		<div style="float: right;">
+		<!-- Panneau d'informations -->
+		<div style="float: left; margin: 10px; padding-right: 35%; padding-left: 10px; padding-bottom: 10px; border: 2px solid gray;" >
+			<p>
+				<strong>Informations :</strong> </br> </br>
+					Pseudo du joueur 1 : <?php echo $j1 -> getPseudo(); ?>	
+					</br>
+					Pseudo du joueur 2 : <?php echo $j2 -> getPseudo(); ?>
+					</br> </br>
+					C'est à <?php echo $_SESSION['tourDeJeu'] -> getPseudo();?> de jouer !
+				</br> </br> </br>
+				<strong>Erreurs :</strong> </br> </br>
+					<?php if(isset($erreur)) echo $erreur; ?>
+			</p>
 			<form method = "get" action="Reinitialisation.php">
 				<input type="submit" name="reini" value= "Redémarer la partie" />
 			</form>
+			</br> </br>
+			<form method = "get" action="AnnulerCoup.php">
+				<input type="submit" name="reini" value= "Annuler le dernier coup" />
+			</form>
+			
 		</div>
 	
 </body>
@@ -281,7 +306,9 @@
 
 <?php 
 	// Sauvegarde de l'état du plateau
+	//if(isset($_SESSION['plateau'])) $_SESSION['sauvegarde'] = $_SESSION['plateau'];
 	$_SESSION['plateau'] = $monPlateau;
+	//$monPlateau -> gagnee($j1);
 ?>
 	
 

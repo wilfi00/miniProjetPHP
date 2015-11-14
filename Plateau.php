@@ -111,24 +111,6 @@
 
 		}
 		
-		// Fonction useless pour le moment
-		// fonction qui retourne un tableau de Cases (classe Casse)
-		// Retourne toutes les cases adjacentes à une case de coordonnées x $x et y $y vides
-		public function deplacementPossibleCases($x, $y)
-		{
-			// Cases adjacentes *à la case* mais un pion dessus
-			$caseAdjacentes = $this -> getCasesAdjacentes($x, $y);
-			foreach($caseAdjacentes as $cases)
-			{
-				if($this -> caseVide($cases -> getCoordCaseX(), $cases -> getCoordCaseY()))
-				{
-					$casesPossibles[] = $cases;
-				}
-
-			}
-			return $casesPossibles;
-		}
-
 		// Fonction qui retourne un tableau de Cases (classe Casse)
 		// Retourne toutes les cases où un pion de coordonnées x $x et y $y peut se déplacer
 		public function deplacement($x, $y, $j)
@@ -221,6 +203,29 @@
 			if(!isset($deplacement)) $deplacement = null;
 			return $deplacement;
 		}
+
+		public function gagnee($j)
+		{
+			$nbPions = 0;
+
+			foreach($this -> cellulesPlateau as $case)
+			{
+				var_dump($case -> getCaseJoueur());
+				//if($case -> getCaseJoueur() == $j)
+				/*{
+					// Si aucun pion n'est isolé
+					if($this -> getCasesAdjacentes($case -> getCoordCaseX(), $case -> getCoordCaseY()) != null)
+					{
+						if($this -> getCasesAdjacentes($case -> getCoordCaseX(), $case -> getCoordCaseY()) -> getCaseJoueur() != $j)
+						{
+							$nbPions++;
+						}
+					}
+				}*/
+			}
+			if($nbPions == 7) return true;
+			else return false;
+		}	
 
 		
 	}

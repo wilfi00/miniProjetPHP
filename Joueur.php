@@ -12,7 +12,7 @@ class Joueur
 		$this -> couleur = $couleur;
 	}
 
-    public function getPrenom()
+    public function getPseudo()
     {
 		return $this -> pseudo;
 	}
